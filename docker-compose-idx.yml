@@ -1,0 +1,123 @@
+# ==================================================
+# Splunk Search Head Cluster Environment
+# --------------------------------------------------
+# - 3 Indexers
+# - 1 Cluster Master (CM)
+# - Replication Factor: 2
+# - Search Factor: 2
+# - Uses external Docker network: skynet
+# - Requires .env file
+# ==================================================
+
+version: '3.8'
+
+services:
+
+  # -------------------------------
+  # Cluster Master (CM)
+  # -------------------------------
+  cm1:
+    image: splunk/splunk:9.0.3-openjdk11
+    container_name: cm1
+    hostname: cm1
+    networks:
+      - skynet
+    ports:
+      - "8004:8000"   # Web UI
+      - "8093:8089"   # Management
+    environment:
+      SPLUNK_PASSWORD: ${SPLUNK_PASSWORD}
+      SPLUNK_GENERAL_TERMS: "--accept-sgt-current-at-splunk-com"
+      SPLUNK_START_ARGS: "--accept-license"
+      SPLUNK_INDEXER_URL: idx1,idx2,idx3
+      SPLUNK_CLUSTER_MASTER_URL: cm1
+      SPLUNK_CLUSTER_MASTER_KEY: ${SPLUNK_CLUSTER_MASTER_KEY}
+      SPLUNK_ROLE: splunk_cluster_master
+    tty: true
+    stdin_open: true
+    restart: unless-stopped
+
+  # -------------------------------
+  # Indexer 1
+  # -------------------------------
+  idx1:
+    image: splunk/splunk:9.0.3-openjdk11
+    container_name: idx1
+    hostname: idx1
+    networks:
+      - skynet
+    ports:
+      - "8001:8000"
+      - "8090:8089"
+    depends_on:
+      - cm1
+    environment:
+      SPLUNK_PASSWORD: ${SPLUNK_PASSWORD}
+      SPLUNK_GENERAL_TERMS: "--accept-sgt-current-at-splunk-com"
+      SPLUNK_START_ARGS: "--accept-license"
+      SPLUNK_INDEXER_URL: idx1,idx2,idx3
+      SPLUNK_CLUSTER_MASTER_URL: cm1
+      SPLUNK_CLUSTER_MASTER_KEY: ${SPLUNK_CLUSTER_MASTER_KEY}
+      SPLUNK_ROLE: splunk_indexer
+    tty: true
+    stdin_open: true
+    restart: unless-stopped
+
+  # -------------------------------
+  # Indexer 2
+  # -------------------------------
+  idx2:
+    image: splunk/splunk:9.0.3-openjdk11
+    container_name: idx2
+    hostname: idx2
+    networks:
+      - skynet
+    ports:
+      - "8002:8000"
+      - "8091:8089"
+    depends_on:
+      - cm1
+    environment:
+      SPLUNK_PASSWORD: ${SPLUNK_PASSWORD}
+      SPLUNK_GENERAL_TERMS: "--accept-sgt-current-at-splunk-com"
+      SPLUNK_START_ARGS: "--accept-license"
+      SPLUNK_INDEXER_URL: idx1,idx2,idx3
+      SPLUNK_CLUSTER_MASTER_URL: cm1
+      SPLUNK_CLUSTER_MASTER_KEY: ${SPLUNK_CLUSTER_MASTER_KEY}
+      SPLUNK_ROLE: splunk_indexer
+    tty: true
+    stdin_open: true
+    restart: unless-stopped
+
+  # -------------------------------
+  # Indexer 3
+  # -------------------------------
+  idx3:
+    image: splunk/splunk:9.0.3-openjdk11
+    container_name: idx3
+    hostname: idx3
+    networks:
+      - skynet
+    ports:
+      - "8003:8000"
+      - "8092:8089"
+    depends_on:
+      - cm1
+    environment:
+      SPLUNK_PASSWORD: ${SPLUNK_PASSWORD}
+      SPLUNK_GENERAL_TERMS: "--accept-sgt-current-at-splunk-com"
+      SPLUNK_START_ARGS: "--accept-license"
+      SPLUNK_INDEXER_URL: idx1,idx2,idx3
+      SPLUNK_CLUSTER_MASTER_URL: cm1
+      SPLUNK_CLUSTER_MASTER_KEY: ${SPLUNK_CLUSTER_MASTER_KEY}
+      SPLUNK_ROLE: splunk_indexer
+    tty: true
+    stdin_open: true
+    restart: unless-stopped
+
+# -------------------------------
+# Networks
+# -------------------------------
+networks:
+  skynet:
+    external: true
