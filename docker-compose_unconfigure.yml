@@ -1,15 +1,3 @@
-# ==================================================
-# Splunk Indexer Cluster Environment
-# --------------------------------------------------
-# - 3 Indexers - (Unconfigure)
-# - 1 Cluster Master (CM) - (Unconfigure)
-# - 3 Search Heads - (Configured)
-# - 1 Deployer - (Configured)
-# - Replication Factor: 2
-# - Search Factor: 2
-# - Uses external Docker network: skynet
-# - Requires .env file
-# ==================================================
 services:
   # -------------------------------
   # Cluster Master (CM)
