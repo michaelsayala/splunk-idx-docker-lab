@@ -6,8 +6,8 @@ This repository provides a Docker-based Splunk lab environment designed to simul
 
 It supports two deployment modes:
 
-1. [Base Environment (Unconfigured)](https://github.com/michaelsayala/splunk-idx-docker-lab/blob/main/docker-compose_unconfigure.base.yml)
-2. [Preconfigured Indexer Cluster with Search Head Cluster](https://github.com/michaelsayala/splunk-idx-docker-lab/blob/main/docker-compose-shc.yml)
+1. [Base Environment (Unconfigured)](https://github.com/michaelsayala/splunk-idx-docker-lab/blob/main/docker-compose_unconfigure.yml)
+2. [Preconfigured Indexer Cluster with Search Head Cluster](https://github.com/michaelsayala/splunk-idx-docker-lab/blob/main/docker-compose-idx.yml)
 
 ****
 This lab is intended for learning, testing, troubleshooting, and demonstrating Splunk indexer clustering in a controlled environment.
