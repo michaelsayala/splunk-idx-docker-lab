@@ -28,12 +28,12 @@ Base Environment (Unconfigured)
 
 +---------------------+      +---------------------+      +---------------------+
 | Search Head 1 (sh1) |      | Search Head 2 (sh2) |      | Search Head 3 (sh3) |
-| SHC Not Configured  |      | SHC Not Configured  |      | SHC Not Configured  |
+| SHC Configured      |      | SHC Configured      |      | SHC Configured      |
 +---------------------+      +---------------------+      +---------------------+
 
 +---------------------+
 | Deployer (dep1)     |
-| Not Configured      |
+| Configured          |
 +---------------------+
 
 +---------------------+
