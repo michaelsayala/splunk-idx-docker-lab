@@ -9,8 +9,8 @@ services:
     networks:
       - skynet
     ports:
-      - "8001:8000"   # Web UI
-      - "8091:8089"   # Management
+      - "8001:8000"
+      - "8091:8089"
     environment:
       SPLUNK_PASSWORD: ${SPLUNK_PASSWORD}
       SPLUNK_GENERAL_TERMS: "--accept-sgt-current-at-splunk-com"
