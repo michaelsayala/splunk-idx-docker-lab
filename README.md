@@ -50,13 +50,10 @@ skynet
 ## Cluster Layout
 ## Splunk Cluster Architecture
 
+## Splunk Cluster Architecture
+
 ```mermaid
 flowchart TB
-
-%% =========================
-%% Users
-%% =========================
-USER[Users / Analysts]
 
 %% =========================
 %% Search Head Cluster
@@ -87,25 +84,12 @@ subgraph IDX_CLUSTER["Indexer Cluster"]
 end
 
 %% =========================
-%% Data Sources
+%% Relationships
 %% =========================
-subgraph DATA["Data Sources"]
-    APP["Applications"]
-    SYS["Servers / OS Logs"]
-    NET["Network Devices"]
-end
 
-%% =========================
-%% Forwarders
-%% =========================
-UF["Universal Forwarders"]
-
-%% =========================
-%% Data Flow
-%% =========================
-USER --> SH1
-USER --> SH2
-USER --> SH3
+DEP --> SH1
+DEP --> SH2
+DEP --> SH3
 
 SH1 --> IDX1
 SH1 --> IDX2
@@ -122,18 +106,6 @@ SH3 --> IDX3
 IDX1 --- CM
 IDX2 --- CM
 IDX3 --- CM
-
-DEP --> SH1
-DEP --> SH2
-DEP --> SH3
-
-APP --> UF
-SYS --> UF
-NET --> UF
-
-UF -->|9997| IDX1
-UF -->|9997| IDX2
-UF -->|9997| IDX3
 ```
 
 ```
