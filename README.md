@@ -28,30 +28,6 @@ This environment allows you to practice:
 
 ## Architecture
 
- Component | Hostname | Web Port | Management Port | Indexing Port |
-|-----------|----------|----------|----------------|--------------|
-| Cluster Manager | cm1 | 8000 | 8089 | N/A |
-| Indexer 1 | idx1 | 8000 | 8089 | 9997 |
-| Indexer 2 | idx2 | 8000 | 8089 | 9997 |
-| Indexer 3 | idx3 | 8000 | 8089 | 9997 |
-| Search Head 1 | sh1 | 8000 | 8089 | N/A |
-| Search Head 2 | sh2 | 8000 | 8089 | N/A |
-| Search Head 3 | sh3 | 8000 | 8089 | N/A |
-| Deployer | dep1 | 8000 | 8089 | N/A |
-
-All containers run on the external Docker network:
-
-```
-skynet
-```
-
----
-
-## Cluster Layout
-## Splunk Cluster Architecture
-
-## Splunk Cluster Architecture
-
 ```mermaid
 flowchart TB
 
@@ -107,36 +83,23 @@ IDX1 --- CM
 IDX2 --- CM
 IDX3 --- CM
 ```
+---
+
+ Component | Hostname | Web Port | Management Port | Indexing Port |
+|-----------|----------|----------|----------------|--------------|
+| Cluster Manager | cm1 | 8000 | 8089 | N/A |
+| Indexer 1 | idx1 | 8000 | 8089 | 9997 |
+| Indexer 2 | idx2 | 8000 | 8089 | 9997 |
+| Indexer 3 | idx3 | 8000 | 8089 | 9997 |
+| Search Head 1 | sh1 | 8000 | 8089 | N/A |
+| Search Head 2 | sh2 | 8000 | 8089 | N/A |
+| Search Head 3 | sh3 | 8000 | 8089 | N/A |
+| Deployer | dep1 | 8000 | 8089 | N/A |
+
+All containers run on the external Docker network:
 
 ```
-                     +----------------------+
-                     |   Cluster Manager    |
-                     |        (cm1)         |
-                     +----------+-----------+
-                                |
-             -----------------------------------------
-             |                |                      |
-         +--------+      +--------+             +--------+
-         |  idx1  |      |  idx2  |             |  idx3  |
-         +--------+      +--------+             +--------+
-
-                   Indexer Cluster (Search Peers)
-
-                                |
-                                |
-                   +-----------------------------+
-                   |     Search Head Cluster     |
-                   +-----------------------------+
-
-            +--------+       +--------+       +--------+
-            |  sh1   |       |  sh2   |       |  sh3   |
-            +--------+       +--------+       +--------+
-
-                                |
-                           +-----------+
-                           | Deployer  |
-                           |   dep1    |
-                           +-----------+
+skynet
 ```
 
 ---
