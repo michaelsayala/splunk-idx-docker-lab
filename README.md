@@ -48,6 +48,93 @@ skynet
 ---
 
 ## Cluster Layout
+## Splunk Cluster Architecture
+
+```mermaid
+flowchart TB
+
+%% =========================
+%% Users
+%% =========================
+USER[Users / Analysts]
+
+%% =========================
+%% Search Head Cluster
+%% =========================
+subgraph SHC["Search Head Cluster"]
+    SH1["Search Head 1 (sh1)"]
+    SH2["Search Head 2 (sh2)"]
+    SH3["Search Head 3 (sh3)"]
+end
+
+%% =========================
+%% Deployer
+%% =========================
+DEP["Deployer (dep1)"]
+
+%% =========================
+%% Cluster Manager
+%% =========================
+CM["Cluster Manager (cm1)"]
+
+%% =========================
+%% Indexer Cluster
+%% =========================
+subgraph IDX_CLUSTER["Indexer Cluster"]
+    IDX1["Indexer 1 (idx1)"]
+    IDX2["Indexer 2 (idx2)"]
+    IDX3["Indexer 3 (idx3)"]
+end
+
+%% =========================
+%% Data Sources
+%% =========================
+subgraph DATA["Data Sources"]
+    APP["Applications"]
+    SYS["Servers / OS Logs"]
+    NET["Network Devices"]
+end
+
+%% =========================
+%% Forwarders
+%% =========================
+UF["Universal Forwarders"]
+
+%% =========================
+%% Data Flow
+%% =========================
+USER --> SH1
+USER --> SH2
+USER --> SH3
+
+SH1 --> IDX1
+SH1 --> IDX2
+SH1 --> IDX3
+
+SH2 --> IDX1
+SH2 --> IDX2
+SH2 --> IDX3
+
+SH3 --> IDX1
+SH3 --> IDX2
+SH3 --> IDX3
+
+IDX1 --- CM
+IDX2 --- CM
+IDX3 --- CM
+
+DEP --> SH1
+DEP --> SH2
+DEP --> SH3
+
+APP --> UF
+SYS --> UF
+NET --> UF
+
+UF -->|9997| IDX1
+UF -->|9997| IDX2
+UF -->|9997| IDX3
+```
 
 ```
                      +----------------------+
