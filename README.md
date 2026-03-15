@@ -9,6 +9,7 @@ The lab demonstrates the following Splunk architectures:
 - **Indexer Clustering**
 - **Search Head Clustering (SHC)**
 - **Search Head Deployer**
+- **Cluster Manager**
 
 In this lab:
 
