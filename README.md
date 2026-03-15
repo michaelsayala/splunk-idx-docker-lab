@@ -28,16 +28,16 @@ This environment allows you to practice:
 
 ## Architecture
 
-| Component | Hostname | Web Port | Management Port |
-|-----------|----------|----------|----------------|
-| Cluster Manager | cm1 | 8000 | 8089 |
-| Indexer 1 | idx1 | 8000 | 8089 |
-| Indexer 2 | idx2 | 8000 | 8089 |
-| Indexer 3 | idx3 | 8000 | 8089 |
-| Search Head 1 | sh1 | 8000 | 8089 |
-| Search Head 2 | sh2 | 8000 | 8089 |
-| Search Head 3 | sh3 | 8000 | 8089 |
-| Deployer | dep1 | 8000 | 8089 |
+ Component | Hostname | Web Port | Management Port | Indexing Port |
+|-----------|----------|----------|----------------|--------------|
+| Cluster Manager | cm1 | 8000 | 8089 | N/A |
+| Indexer 1 | idx1 | 8000 | 8089 | 9997 |
+| Indexer 2 | idx2 | 8000 | 8089 | 9997 |
+| Indexer 3 | idx3 | 8000 | 8089 | 9997 |
+| Search Head 1 | sh1 | 8000 | 8089 | N/A |
+| Search Head 2 | sh2 | 8000 | 8089 | N/A |
+| Search Head 3 | sh3 | 8000 | 8089 | N/A |
+| Deployer | dep1 | 8000 | 8089 | N/A |
 
 All containers run on the external Docker network:
 
