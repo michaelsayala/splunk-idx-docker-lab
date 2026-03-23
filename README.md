@@ -143,36 +143,59 @@ SPLUNK_SHC_SECRET=SHClusterSecret123
 
 ## Deployment Modes
 
-### 1 Base Environment
+### 1 Base Environment (Manual Configuration)
 
-This deployment starts all Splunk components.
+This deployment starts all Splunk components, but the Indexer Cluster is not configured.
 
 The **Search Head Cluster is already configured**, but the **Indexer Cluster is not yet configured**.
 
 Components started:
 
-- Cluster Manager
-- 3 Indexers
-- Search Head Cluster (3 members)
-- Deployer
+- Cluster Manager (cm1)
+- 3 Indexers (idx1, idx2, idx3)
+- Search Head Cluster (sh1, sh2, sh3)
+- Deployer (dep1)
 
-This mode allows you to manually practice:
+Allows you to manually practice:
 
-- Indexer cluster configuration
+- Initializing the Indexer Cluster
 - Peer node registration
-- Setting replication factor and search factor
-- Connecting the indexers to the Cluster Manager
+- Setting replication and search factors
+- Connecting Search Heads to Indexers as search peers
+
+Start environment:
+
+```
+docker-compose -f docker-compose.manual.yml up -d
+```
 
 ---
 
 ### 2 Preconfigured Indexer Cluster
 
-This deployment automatically configures the Indexer Cluster during container startup.
+This deployment automatically configures the Indexer Cluster during container startup:
 
-Automatic configuration includes:
+- Sets cm1 as Cluster Manager
+- Joins idx1, idx2, idx3 to the Indexer Cluster
+- Connects the Search Head Cluster to the Indexers as search peers
 
-- Setting **cm1 as Cluster Manager**
-- Joining **idx1, idx2, idx3** to the Indexer Cluster
-- Connecting the Search Head Cluster to the indexers as **search peers**
+Start environment:
+
+```
+docker-compose -f docker-compose.preconfigured.yml up -d
+```
 
 The Search Head Cluster is already configured and ready to perform distributed searches across the indexer cluster.
+
+## Repository Structure
+
+```
+.
+├── .env
+├── docker-compose.manual.yml
+├── docker-compose.preconfigured.yml
+├── README.md
+├── docs/
+│   ├── deployment-guide.md
+│   ├── post-deployment-validation.md
+```
