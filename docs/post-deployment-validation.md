@@ -208,21 +208,7 @@ splunk rolling-restart cluster-peers
 
 ## 4. Search Head Integration Validation
 
-### 4.1 Verify Search Head Connection to Cluster Manager
-
-Run on Search Head:
-
-```bash
-splunk show cluster-status
-```
-
-**Expected:**
-- Connected to Cluster Manager
-- No connection errors
-
----
-
-### 4.2 Verify Distributed Search to Indexers
+### 4.1 Verify Distributed Search to Indexers
 
 ```bash
 splunk list search-server
@@ -237,7 +223,7 @@ https://idx3:8089    Active
 
 ---
 
-### 4.3 End-to-End Search Validation
+### 4.2 End-to-End Search Validation
 
 ```spl
 index=_internal | stats count by splunk_server
