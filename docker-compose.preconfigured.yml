@@ -204,6 +204,7 @@ services:
       SPLUNK_ROLE: splunk_deployer
       SPLUNK_SHC_SECRET: ${SPLUNK_SHC_SECRET}
       SPLUNK_SEARCH_HEAD_URL: sh1,sh2,sh3
+      SPLUNK_INDEXER_URL: idx1,idx2,idx3
     volumes:
     - dep1_data:/opt/splunk
     tty: true
