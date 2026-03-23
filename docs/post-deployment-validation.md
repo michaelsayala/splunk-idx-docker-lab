@@ -29,13 +29,13 @@ splunk show cluster-status
 Run on each Indexer Peer:
 
 ```bash
-splunk show cluster-status
+curl -k -u admin:changeme https://<CM_HOST>:8089/services/cluster/master/peers?output_mode=json
 ```
 
 **Expected:**
-- Peer connected to Cluster Manager
-- Status = `Up`
-- No heartbeat failures
+- Peer node appears in the peers array
+- Status = Up
+- Correct replication_factor and search_factor
 
 ---
 
