@@ -1,1 +1,211 @@
-
+services:
+  # -------------------------------
+  # Cluster Master (CM)
+  # -------------------------------
+  cm1:
+    image: splunk/splunk:9.0.3-openjdk11
+    container_name: cm1
+    hostname: cm1
+    networks:
+      - skynet
+    ports:
+      - "8001:8000"
+      - "8091:8089"
+    environment:
+      SPLUNK_PASSWORD: ${SPLUNK_PASSWORD}
+      SPLUNK_GENERAL_TERMS: "--accept-sgt-current-at-splunk-com"
+      SPLUNK_START_ARGS: "--accept-license"
+    volumes:
+    - cm1_data:/opt/splunk
+    tty: true
+    stdin_open: true
+    restart: unless-stopped
+  # -------------------------------
+  # Indexer 1
+  # -------------------------------
+  idx1:
+    image: splunk/splunk:9.0.3-openjdk11
+    container_name: idx1
+    hostname: idx1
+    networks:
+      - skynet
+    ports:
+      - "8002:8000"
+      - "8092:8089"
+      - "9997"
+    environment:
+      SPLUNK_PASSWORD: ${SPLUNK_PASSWORD}
+      SPLUNK_GENERAL_TERMS: "--accept-sgt-current-at-splunk-com"
+      SPLUNK_START_ARGS: "--accept-license"
+    volumes:
+    - idx1_data:/opt/splunk
+    tty: true
+    stdin_open: true
+    restart: unless-stopped
+  # -------------------------------
+  # Indexer 2
+  # -------------------------------
+  idx2:
+    image: splunk/splunk:9.0.3-openjdk11
+    container_name: idx2
+    hostname: idx2
+    networks:
+      - skynet
+    ports:
+      - "8003:8000"
+      - "8093:8089"
+      - "9997"
+    environment:
+      SPLUNK_PASSWORD: ${SPLUNK_PASSWORD}
+      SPLUNK_GENERAL_TERMS: "--accept-sgt-current-at-splunk-com"
+      SPLUNK_START_ARGS: "--accept-license"
+    volumes:
+    - idx2_data:/opt/splunk
+    tty: true
+    stdin_open: true
+    restart: unless-stopped
+  # -------------------------------
+  # Indexer 3
+  # -------------------------------
+  idx3:
+    image: splunk/splunk:9.0.3-openjdk11
+    container_name: idx3
+    hostname: idx3
+    networks:
+      - skynet
+    ports:
+      - "8004:8000"
+      - "8094:8089"
+      - "9997"
+    environment:
+      SPLUNK_PASSWORD: ${SPLUNK_PASSWORD}
+      SPLUNK_GENERAL_TERMS: "--accept-sgt-current-at-splunk-com"
+      SPLUNK_START_ARGS: "--accept-license"
+    volumes:
+    - idx3_data:/opt/splunk
+    tty: true
+    stdin_open: true
+    restart: unless-stopped
+  # -------------------------------
+  # Search Head 1
+  # -------------------------------
+  sh1:
+    image: splunk/splunk:9.0.3-openjdk11
+    container_name: sh1
+    hostname: sh1
+    networks:
+      - skynet
+    ports:
+      - "8005:8000"
+      - "8095:8089"
+    environment:
+      SPLUNK_PASSWORD: ${SPLUNK_PASSWORD}
+      SPLUNK_GENERAL_TERMS: "--accept-sgt-current-at-splunk-com"
+      SPLUNK_START_ARGS: "--accept-license"
+      SPLUNK_ROLE: splunk_search_head
+      SPLUNK_SEARCH_HEAD_URL: sh1,sh2,sh3
+      SPLUNK_SEARCH_HEAD_CAPTAIN_URL: sh1
+      SPLUNK_SHC_SECRET: ${SPLUNK_SHC_SECRET}
+      SPLUNK_DEPLOYER_URL: dep1
+      SPLUNK_INDEXER_URL: idx1,idx2,idx3
+    volumes:
+    - sh1_data:/opt/splunk
+    tty: true
+    stdin_open: true
+    restart: unless-stopped
+  # -------------------------------
+  # Search Head 2
+  # -------------------------------
+  sh2:
+    image: splunk/splunk:9.0.3-openjdk11
+    container_name: sh2
+    hostname: sh2
+    networks:
+      - skynet
+    ports:
+      - "8006:8000"
+      - "8096:8089"
+    environment:
+      SPLUNK_PASSWORD: ${SPLUNK_PASSWORD}
+      SPLUNK_GENERAL_TERMS: "--accept-sgt-current-at-splunk-com"
+      SPLUNK_START_ARGS: "--accept-license"
+      SPLUNK_ROLE: splunk_search_head
+      SPLUNK_SEARCH_HEAD_URL: sh1,sh2,sh3
+      SPLUNK_SEARCH_HEAD_CAPTAIN_URL: sh1
+      SPLUNK_SHC_SECRET: ${SPLUNK_SHC_SECRET}
+      SPLUNK_DEPLOYER_URL: dep1
+      SPLUNK_INDEXER_URL: idx1,idx2,idx3
+    volumes:
+    - sh2_data:/opt/splunk
+    tty: true
+    stdin_open: true
+    restart: unless-stopped
+  # -------------------------------
+  # Search Head 3
+  # -------------------------------
+  sh3:
+    image: splunk/splunk:9.0.3-openjdk11
+    container_name: sh3
+    hostname: sh3
+    networks:
+      - skynet
+    ports:
+      - "8007:8000"
+      - "8097:8089"
+    environment:
+      SPLUNK_PASSWORD: ${SPLUNK_PASSWORD}
+      SPLUNK_GENERAL_TERMS: "--accept-sgt-current-at-splunk-com"
+      SPLUNK_START_ARGS: "--accept-license"
+      SPLUNK_ROLE: splunk_search_head
+      SPLUNK_SEARCH_HEAD_URL: sh1,sh2,sh3
+      SPLUNK_SEARCH_HEAD_CAPTAIN_URL: sh1
+      SPLUNK_SHC_SECRET: ${SPLUNK_SHC_SECRET}
+      SPLUNK_DEPLOYER_URL: dep1
+      SPLUNK_INDEXER_URL: idx1,idx2,idx3
+    volumes:
+    - sh3_data:/opt/splunk
+    tty: true
+    stdin_open: true
+    restart: unless-stopped
+  # -------------------------------
+  # Deployer
+  # -------------------------------
+  dep1:
+    image: splunk/splunk:9.0.3-openjdk11
+    container_name: dep1
+    hostname: dep1
+    networks:
+      - skynet
+    ports:
+      - "8008:8000"
+      - "8098:8089"
+    environment:
+      SPLUNK_PASSWORD: ${SPLUNK_PASSWORD}
+      SPLUNK_GENERAL_TERMS: "--accept-sgt-current-at-splunk-com"
+      SPLUNK_START_ARGS: "--accept-license"
+      SPLUNK_ROLE: splunk_deployer
+      SPLUNK_SHC_SECRET: ${SPLUNK_SHC_SECRET}
+      SPLUNK_SEARCH_HEAD_URL: sh1,sh2,sh3
+    volumes:
+    - dep1_data:/opt/splunk
+    tty: true
+    stdin_open: true
+    restart: unless-stopped
+# -------------------------------
+# Networks
+# -------------------------------
+networks:
+  skynet:
+    external: true
+# -------------------------------
+# Named Volumes
+# -------------------------------
+volumes:
+  cm1_data:
+  idx1_data:
+  idx2_data:
+  idx3_data:
+  dep1_data:
+  sh1_data:
+  sh2_data:
+  sh3_data:
