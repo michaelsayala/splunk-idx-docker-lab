@@ -8,7 +8,7 @@ A step-by-step guide for deploying a **Splunk Indexer Cluster**, including confi
 
 > Applies to the **Cluster Manager** (formerly Cluster Master)
 
-### Method 1: Splunk Web (Recommended)
+### Method 1: Splunk Web
 
 1. Go to **Settings → Indexer Clustering**
 2. Click **Enable Indexer Clustering**
