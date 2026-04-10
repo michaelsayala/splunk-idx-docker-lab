@@ -2,27 +2,23 @@
 
 ## Overview
 
-This repository provides a **Docker-based Splunk clustered environment** designed to simulate a distributed Splunk deployment.
+This repository provides a Docker-based Splunk environment designed to simulate a distributed deployment.
 
-The lab demonstrates the following Splunk architectures:
+It includes the following components:
 
-- **Indexer Clustering**
-- **Search Head Clustering (SHC)**
-- **Search Head Deployer**
-- **Cluster Manager**
+- Indexer Cluster
+- Search Head Cluster (SHC)
+- Search Head Deployer
+- Cluster Manager
 
-In this lab:
+The Search Head Cluster is preconfigured and connected to the Indexer Cluster as search peers.
 
-- The **Search Head Cluster is already configured** in both deployment modes.
-- The **Search Heads act as search peers to the Indexer Cluster**.
-- The **difference between the two deployment modes only affects the Indexer Cluster configuration**.
+This lab enables hands-on practice with:
 
-This environment allows you to practice:
-
-- Building an Indexer Cluster
-- Connecting Search Heads to Indexer peers
+- Building and configuring an Indexer Cluster
+- Connecting Search Heads to Indexers
 - Managing Search Head Clusters
-- Using a Deployer to manage Search Head apps
+- Deploying apps using a Deployer
 - Understanding distributed search architecture
 
 ---
@@ -32,37 +28,20 @@ This environment allows you to practice:
 ```mermaid
 flowchart TB
 
-%% =========================
-%% Search Head Cluster
-%% =========================
 subgraph SHC["Search Head Cluster"]
     SH1["Search Head 1 (sh1)"]
     SH2["Search Head 2 (sh2)"]
     SH3["Search Head 3 (sh3)"]
 end
 
-%% =========================
-%% Deployer
-%% =========================
 DEP["Deployer (dep1)"]
-
-%% =========================
-%% Cluster Manager
-%% =========================
 CM["Cluster Manager (cm1)"]
 
-%% =========================
-%% Indexer Cluster
-%% =========================
 subgraph IDX_CLUSTER["Indexer Cluster"]
     IDX1["Indexer 1 (idx1)"]
     IDX2["Indexer 2 (idx2)"]
     IDX3["Indexer 3 (idx3)"]
 end
-
-%% =========================
-%% Relationships
-%% =========================
 
 DEP --> SH1
 DEP --> SH2
@@ -85,7 +64,7 @@ IDX2 --- CM
 IDX3 --- CM
 ```
 ---
-
+## Components
  Component | Hostname | Web Port | Management Port | Indexing Port |
 |-----------|----------|----------|----------------|--------------|
 | Cluster Manager | cm1 | 8000 | 8089 | N/A |
@@ -145,25 +124,18 @@ SPLUNK_SHC_SECRET=SHClusterSecret123
 
 ### 1 Base Environment (Manual Configuration)
 
-This deployment starts all Splunk components, but the Indexer Cluster is not configured.
+Starts all components without configuring the Indexer Cluster.
 
-The **Search Head Cluster is already configured**, but the **Indexer Cluster is not yet configured**.
+The Search Head Cluster is already configured.
 
-Components started:
+Use this mode to practice:
 
-- Cluster Manager (cm1)
-- 3 Indexers (idx1, idx2, idx3)
-- Search Head Cluster (sh1, sh2, sh3)
-- Deployer (dep1)
+Initializing the Indexer Cluster
+Registering peer nodes
+Configuring replication and search factors
+Connecting Search Heads to Indexers
 
-Allows you to manually practice:
-
-- Initializing the Indexer Cluster
-- Peer node registration
-- Setting replication and search factors
-- Connecting Search Heads to Indexers as search peers
-
-Start environment:
+Start:
 
 ```
 docker-compose -f docker-compose.manual.yml up -d
@@ -173,19 +145,19 @@ docker-compose -f docker-compose.manual.yml up -d
 
 ### 2 Preconfigured Indexer Cluster
 
-This deployment automatically configures the Indexer Cluster during container startup:
+Automatically configures the Indexer Cluster during startup:
 
-- Sets cm1 as Cluster Manager
-- Joins idx1, idx2, idx3 to the Indexer Cluster
-- Connects the Search Head Cluster to the Indexers as search peers
+Sets cm1 as Cluster Manager
+Joins all indexers to the cluster
+Connects Search Heads as search peers
 
-Start environment:
+Start:
 
 ```
 docker-compose -f docker-compose.preconfigured.yml up -d
 ```
 
-The Search Head Cluster is already configured and ready to perform distributed searches across the indexer cluster.
+The environment is ready for distributed search.
 
 ## Repository Structure
 
