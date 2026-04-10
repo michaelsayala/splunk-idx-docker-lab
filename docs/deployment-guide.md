@@ -42,11 +42,13 @@ cd /opt/splunk/bin
 
 ### Method 3: Configuration File
 
-**Path:**
+**File Location**
 
 ```
 $SPLUNK_HOME/etc/system/local/server.conf
 ```
+
+**Configuration**
 
 ```ini
 [clustering]
@@ -92,6 +94,14 @@ pass4SymmKey = <pass4SymmKey>
 
 ### Method 3: Configuration File
 
+**File Location**
+
+```
+$SPLUNK_HOME/etc/system/local/server.conf
+```
+
+**Configuration**
+
 ```ini
 [replication_port://8090]
 
@@ -132,6 +142,14 @@ pass4SymmKey = <pass4SymmKey>
 ---
 
 ### Method 3: Configuration File
+
+**File Location**
+
+```
+$SPLUNK_HOME/etc/system/local/server.conf
+```
+
+**Configuration**
 
 ```ini
 [clustering]
