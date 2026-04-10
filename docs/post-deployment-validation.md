@@ -1,98 +1,109 @@
-# Splunk Indexer Cluster – Post-Deployment Validation
+# Splunk Indexer Cluster – Post-Deployment Validation Guide
 
-This document provides **validation, functional testing, cluster bundle verification, search head integration, security checks, and troubleshooting procedures** after deploying a Splunk Indexer Cluster (Cluster Manager and Peer Nodes).
+This guide provides validation, functional testing, cluster bundle verification, search head integration checks, security validation, and troubleshooting procedures after deploying a Splunk Indexer Cluster.
+
+---
+
+## Overview
+
+Use this guide to ensure your cluster is:
+
+* Healthy and stable
+* Properly replicating data
+* Fully searchable
+* Operationally ready for production
 
 ---
 
 ## 1. Cluster Health Verification
 
-### 1.1 Verify Cluster Status (Cluster Manager)
-
-Run on the Cluster Manager:
+### 1.1 Cluster Manager Status
 
 ```bash
 splunk show cluster-status
 ```
 
-**Expected Results:**
-- All peers show `Status: Up`
-- Replication Factor (RF) = Met
-- Search Factor (SF) = Met
-- No peers in `Pending` or `Down`
-- No fix-up tasks in progress
-- Cluster state = `Active`
+**Expected:**
+
+* All peers = `Up`
+* Replication Factor (RF) = Met
+* Search Factor (SF) = Met
+* No peers in `Pending` or `Down`
+* No fix-up tasks in progress
+* Cluster state = Active
 
 ---
 
-### 1.2 Verify Peer Node Status
-
-Run on each Indexer Peer:
+### 1.2 Peer Status (REST API)
 
 ```bash
-curl -k -u admin:changeme https://<CM_HOST>:8089/services/cluster/master/peers?output_mode=json
+curl -k -u <user>:<password> https://<cluster_manager_ip>:8089/services/cluster/master/peers?output_mode=json
 ```
 
 **Expected:**
-- Peer node appears in the peers array
-- Status = Up
-- Correct replication_factor and search_factor
+
+* Peer appears in response
+* Status = Up
+* Correct RF/SF values
 
 ---
 
-### 1.3 Verify Replication and Search Factor
+### 1.3 Replication and Search Factor Check
 
 ```bash
 splunk show cluster-status | grep -E "Replication|Search"
 ```
 
 **Expected:**
-- Replication Factor = configured value
-- Search Factor = configured value
-- Both = `Met`
+
+* RF and SF match configured values
+* Both show Met
 
 ---
 
-### 1.4 Verify Peer Registration
+### 1.4 Peer Registration
 
 ```bash
 splunk list cluster-peers
 ```
 
 **Expected:**
-- All peers listed
-- Status = `Up`
-- No missing peers
+
+* All peers listed
+* Status = Up
 
 ---
 
-### 1.5 Verify Replication Port Connectivity
+### 1.5 Replication Port Connectivity
 
-(Default replication port: **9887** unless changed)
+(Default port: 9887 unless changed)
 
 ```bash
 telnet <peer_ip> 9887
 ```
 
 **Expected:**
-- Successful connectivity between all peers
+
+* Successful connectivity between peers
 
 ---
 
-## 2. Cluster Bundle Validation (CRITICAL)
+## 2. Cluster Bundle Validation
 
-### 2.1 Validate Cluster Bundle Before Apply
+### 2.1 Validate Before Apply
 
 ```bash
 splunk validate cluster-bundle --check-restart
 ```
 
 **Expected:**
-- No validation errors
-- Restart requirements clearly indicated
+
+* No validation errors
+* Restart requirements displayed
 
 ---
 
-### 2.2 Apply Cluster Bundle
+### 2.2 Apply Bundle
 
 ```bash
 splunk apply cluster-bundle
@@ -107,63 +118,61 @@ splunk show cluster-bundle-status
 ```
 
 **Expected:**
-- Bundle applied successfully
-- No errors
-- All peers updated
+
+* Successful deployment
+* No errors
+* All peers updated
 
 ---
 
-### 2.4 Validate Index Replication
-
-Check on peers:
+### 2.4 Index Replication Validation
 
 ```bash
 splunk list index
 ```
 
 **Expected:**
-- Newly created indexes present on all peers
+
+* Index exists on all peers
 
 ---
 
 ## 3. Functional Testing
 
-### 3.1 Ingestion Test
-
-Generate test data:
+### 3.1 Data Ingestion Test
 
 ```bash
 echo "Indexer cluster test event" >> /tmp/test.log
 ```
-
-Search:
 
 ```spl
 index=_internal | stats count by host
 ```
 
 **Expected:**
-- Events indexed successfully
-- Data searchable across cluster
+
+* Events indexed successfully
+* Data searchable across cluster
 
 ---
 
-### 3.2 Verify Bucket Replication
+### 3.2 Bucket Replication Check
 
 ```bash
 splunk show cluster-status --verbose
 ```
 
 **Expected:**
-- No under-replicated buckets
-- No fix-up backlog
-- Buckets distributed across peers
+
+* No under-replicated buckets
+* No fix-up backlog
+* Buckets distributed across peers
 
 ---
 
 ### 3.3 Peer Failure Test
 
-Stop one peer:
+Stop a peer:
 
 ```bash
 splunk stop
@@ -176,9 +185,10 @@ splunk show cluster-status
 ```
 
 **Expected:**
-- RF/SF temporarily degraded
-- Fix-up starts automatically
-- Data remains searchable
+
+* RF/SF temporarily degraded
+* Fix-up process starts automatically
+* Data remains searchable
 
 Restart peer:
 
@@ -187,8 +197,9 @@ splunk start
 ```
 
 **Expected:**
-- Peer rejoins cluster
-- RF/SF returns to `Met`
+
+* Peer rejoins cluster
+* RF/SF returns to Met
 
 ---
 
@@ -199,22 +210,24 @@ splunk rolling-restart cluster-peers
 ```
 
 **Expected:**
-- Sequential restart
-- No full downtime
-- Searches continue
-- RF/SF maintained
+
+* Sequential restart
+* No full downtime
+* Searches continue
+* RF/SF maintained
 
 ---
 
-## 4. Search Head Integration Validation
+## 4. Search Head Integration
 
-### 4.1 Verify Distributed Search to Indexers
+### 4.1 Verify Connected Indexers
 
 ```bash
 splunk list search-server
 ```
 
 **Expected:**
+
 ```
 https://idx1:8089    Active
 https://idx2:8089    Active
@@ -223,29 +236,31 @@ https://idx3:8089    Active
 
 ---
 
-### 4.2 End-to-End Search Validation
+### 4.2 End-to-End Search Test
 
 ```spl
 index=_internal | stats count by splunk_server
 ```
 
 **Expected:**
-- Results from all indexers
-- Multiple `splunk_server` values
+
+* Results returned from all indexers
+* Multiple splunk_server values
 
 ---
 
 ## 5. Index Configuration Validation
 
-### 5.1 Verify Index Configuration
+### 5.1 Verify indexes.conf
 
 ```bash
 cat $SPLUNK_HOME/etc/master-apps/_cluster/local/indexes.conf
 ```
 
 **Expected:**
-- `repFactor = auto` set
-- Paths correctly configured
+
+* repFactor = auto
+* Correct paths configured
 
 ---
 
@@ -256,129 +271,126 @@ splunk list index
 ```
 
 **Expected:**
-- Index exists on all peers
-- No missing indexes
+
+* Index exists on all peers
+* No missing indexes
 
 ---
 
 ## 6. Security Validation
 
-Ensure the following:
+Ensure the following are implemented:
 
-- SSL enabled on Cluster Manager and Peers
-- Port 8089 restricted (management)
-- Port 9887 restricted (replication)
-- Strong `pass4SymmKey`
-- RBAC enforced
-- Index-level access control configured
-- Audit logs enabled
-- Cluster Manager access restricted
+* SSL enabled on all nodes
+* Port 8089 (management) restricted
+* Port 9887 (replication) restricted
+* Strong pass4SymmKey
+* Role-Based Access Control (RBAC) enforced
+* Index-level access control configured
+* Audit logging enabled
+* Cluster Manager access restricted
 
 ---
 
-## 7. Troubleshooting Guide
+## 7. Troubleshooting
 
-### Issue: Peer Not Joining Cluster
+### Peer Not Joining Cluster
 
-**Check Config:**
 ```bash
 cat $SPLUNK_HOME/etc/system/local/server.conf
 ```
 
-**Check Connectivity:**
 ```bash
-telnet <manager_ip> 8089
-telnet <manager_ip> 9887
+telnet <cluster_manager_ip> 8089
+telnet <cluster_manager_ip> 9887
 ```
 
-**Check Logs:**
 ```bash
 tail -f $SPLUNK_HOME/var/log/splunk/splunkd.log
 ```
 
 ---
 
-### Issue: Replication Factor Not Met
+### Replication Factor Not Met
 
-**Causes:**
-- Peer down
-- Insufficient peers
-- Disk full
+Common causes:
 
-**Fix:**
+* Peer down
+* Insufficient peers
+* Disk issues
+
 ```bash
 splunk show cluster-status
 ```
 
-- Restart peers
-- Add capacity if needed
+---
+
+### Search Factor Not Met
+
+Common causes:
+
+* Peer failure
+* Network instability
+
+Resolution:
+
+* Restore affected peer
+* Allow fix-up to complete
 
 ---
 
-### Issue: Search Factor Not Met
+### Excessive Fix-Up Activity
 
-**Causes:**
-- Peer failure
-- Network instability
-
-**Fix:**
-- Restore peer
-- Allow fix-up to complete
-
----
-
-### Issue: Excessive Fix-Up Activity
-
-**Check:**
 ```bash
 splunk show cluster-status --verbose
 ```
 
-**Causes:**
-- Frequent restarts
-- Hardware bottlenecks
+Possible causes:
+
+* Frequent restarts
+* Resource constraints
 
 ---
 
-### Issue: Indexing Delays
+### Indexing Delays
 
-**Check:**
 ```spl
 index=_internal source=*metrics.log group=queue
 ```
 
-**Causes:**
-- High ingestion
-- Resource constraints
+Possible causes:
+
+* High ingestion rate
+* Resource bottlenecks
 
 ---
 
 ## 8. Operational Readiness Checklist
 
-- [ ] All peers show `Up`
-- [ ] Replication Factor met
-- [ ] Search Factor met
-- [ ] Cluster bundle validated and applied
-- [ ] Index replication verified
-- [ ] Data ingestion tested
-- [ ] Bucket replication verified
-- [ ] Peer failure recovery tested
-- [ ] Rolling restart validated
-- [ ] Search Head integration verified
-- [ ] Logs reviewed (no critical errors)
-- [ ] Security controls implemented
+* [ ] All peers are Up
+* [ ] Replication Factor met
+* [ ] Search Factor met
+* [ ] Cluster bundle validated and applied
+* [ ] Index replication verified
+* [ ] Data ingestion tested
+* [ ] Bucket replication verified
+* [ ] Peer failure recovery tested
+* [ ] Rolling restart validated
+* [ ] Search Head integration verified
+* [ ] Logs reviewed (no critical errors)
+* [ ] Security controls implemented
 
 ---
 
-## 9. Expected Stable Cluster Behavior
+## 9. Expected Cluster Behavior
 
-A properly functioning Indexer Cluster should:
+A properly functioning cluster should:
 
-- Maintain configured Replication Factor (RF)
-- Maintain configured Search Factor (SF)
-- Automatically replicate buckets across peers
-- Automatically perform fix-up during peer failure
-- Support rolling restarts without downtime
-- Maintain searchable data during outages
-- Synchronize indexes via cluster bundle
-- Require no manual bucket management
+* Maintain Replication Factor (RF)
+* Maintain Search Factor (SF)
+* Automatically replicate buckets
+* Perform fix-up during peer failure
+* Support rolling restarts without downtime
+* Maintain search availability during outages
+* Synchronize indexes via cluster bundle
+* Require no manual bucket management
