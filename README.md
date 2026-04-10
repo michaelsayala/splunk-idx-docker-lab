@@ -130,10 +130,10 @@ The Search Head Cluster is already configured.
 
 Use this mode to practice:
 
-Initializing the Indexer Cluster
-Registering peer nodes
-Configuring replication and search factors
-Connecting Search Heads to Indexers
+- Initializing the Indexer Cluster
+- Registering peer nodes
+- Configuring replication and search factors
+- Connecting Search Heads to Indexers
 
 Start:
 
@@ -147,9 +147,9 @@ docker-compose -f docker-compose.manual.yml up -d
 
 Automatically configures the Indexer Cluster during startup:
 
-Sets cm1 as Cluster Manager
-Joins all indexers to the cluster
-Connects Search Heads as search peers
+- Sets cm1 as Cluster Manager
+- Joins all indexers to the cluster
+- Connects Search Heads as search peers
 
 Start:
 
