@@ -122,6 +122,7 @@ splunk show cluster-bundle-status
 ```bash
 splunk list index
 ```
+<img width="787" height="423" alt="image" src="https://github.com/user-attachments/assets/fefe029e-faef-45c2-9094-950dd7a274da" />
 
 **Expected:**
 
