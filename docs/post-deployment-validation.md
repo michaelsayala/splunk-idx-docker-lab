@@ -48,27 +48,16 @@ curl -k -u admin:splunkpassword https://cm1:8089/services/cluster/master/peers?o
 * Peer appears in response
 * Status = Up
 * Correct RF/SF values
-
 ---
 
-### 1.3 Replication and Search Factor Check
-
-```bash
-splunk show cluster-status | grep -E "Replication|Search"
-```
-
-**Expected:**
-
-* RF and SF match configured values
-* Both show Met
-
----
-
-### 1.4 Peer Registration
+### 1.3 Peer Registration
 
 ```bash
 splunk list cluster-peers
 ```
+
+<img width="985" height="537" alt="image" src="https://github.com/user-attachments/assets/3a549ae2-c11b-4ad2-ab94-d854a5266088" />
+
 
 **Expected:**
 
