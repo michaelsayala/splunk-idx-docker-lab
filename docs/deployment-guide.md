@@ -173,6 +173,8 @@ cd /opt/splunk/etc/master-apps/_cluster/local
 ### Create or Edit `indexes.conf`
 
 <img width="335" height="101" alt="image" src="https://github.com/user-attachments/assets/76a01deb-faca-45f8-876f-3b8b376da329" />
+<img width="369" height="174" alt="image" src="https://github.com/user-attachments/assets/538680c3-ead0-4fa2-9398-8b435a36f67d" />
+
 
 ```ini
 [<index_name>]
@@ -181,6 +183,7 @@ homePath = $SPLUNK_DB/<index_name>/db
 coldPath = $SPLUNK_DB/<index_name>/colddb
 thawedPath = $SPLUNK_DB/<index_name>/thaweddb
 ```
+
 
 ---
 
