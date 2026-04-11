@@ -193,5 +193,11 @@ thawedPath = $SPLUNK_DB/<index_name>/thaweddb
 ./splunk apply cluster-bundle
 ./splunk show cluster-bundle-status
 ```
+<img width="1217" height="78" alt="image" src="https://github.com/user-attachments/assets/3d7473fe-86cb-47c6-a7e9-b2137c296382" /> <br>
+<img width="908" height="112" alt="image" src="https://github.com/user-attachments/assets/d341b5ec-7ca7-4ab5-b633-9f22d7d23411" /> <br>
+<img width="960" height="611" alt="image" src="https://github.com/user-attachments/assets/a58ceabd-2c89-4aa0-bdf5-905f93665af4" />
+
+
+
 
 ---
