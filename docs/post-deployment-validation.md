@@ -38,8 +38,10 @@ splunk show cluster-status
 ### 1.2 Peer Status (REST API)
 
 ```bash
-curl -k -u <user>:<password> https://<cluster_manager_ip>:8089/services/cluster/master/peers?output_mode=json
+curl -k -u admin:splunkpassword https://cm1:8089/services/cluster/master/peers?output_mode=json | grep -E "status|label"
 ```
+
+<img width="1445" height="666" alt="image" src="https://github.com/user-attachments/assets/bce5d010-1aca-43b1-9384-7af2751d6020" />
 
 **Expected:**
 
