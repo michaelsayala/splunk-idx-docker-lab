@@ -16,7 +16,8 @@ services:
       SPLUNK_GENERAL_TERMS: "--accept-sgt-current-at-splunk-com"
       SPLUNK_START_ARGS: "--accept-license"
     volumes:
-    - cm1_data:/opt/splunk
+    - cm1_etc:/opt/splunk/etc
+    - cm1_var:/opt/splunk/var
     tty: true
     stdin_open: true
     restart: unless-stopped
@@ -38,7 +39,8 @@ services:
       SPLUNK_GENERAL_TERMS: "--accept-sgt-current-at-splunk-com"
       SPLUNK_START_ARGS: "--accept-license"
     volumes:
-    - idx1_data:/opt/splunk
+    - idx1_etc:/opt/splunk/etc
+    - idx1_var:/opt/splunk/var
     tty: true
     stdin_open: true
     restart: unless-stopped
@@ -60,7 +62,8 @@ services:
       SPLUNK_GENERAL_TERMS: "--accept-sgt-current-at-splunk-com"
       SPLUNK_START_ARGS: "--accept-license"
     volumes:
-    - idx2_data:/opt/splunk
+    - idx2_etc:/opt/splunk/etc
+    - idx2_var:/opt/splunk/var
     tty: true
     stdin_open: true
     restart: unless-stopped
@@ -82,7 +85,8 @@ services:
       SPLUNK_GENERAL_TERMS: "--accept-sgt-current-at-splunk-com"
       SPLUNK_START_ARGS: "--accept-license"
     volumes:
-    - idx3_data:/opt/splunk
+    - idx3_etc:/opt/splunk/etc
+    - idx3_var:/opt/splunk/var
     tty: true
     stdin_open: true
     restart: unless-stopped
@@ -109,7 +113,8 @@ services:
       SPLUNK_DEPLOYER_URL: dep1
       SPLUNK_INDEXER_URL: idx1,idx2,idx3
     volumes:
-    - sh1_data:/opt/splunk
+    - sh1_etc:/opt/splunk/etc
+    - sh1_var:/opt/splunk/var
     tty: true
     stdin_open: true
     restart: unless-stopped
@@ -136,7 +141,8 @@ services:
       SPLUNK_DEPLOYER_URL: dep1
       SPLUNK_INDEXER_URL: idx1,idx2,idx3
     volumes:
-    - sh2_data:/opt/splunk
+    - sh2_etc:/opt/splunk/etc
+    - sh2_var:/opt/splunk/var
     tty: true
     stdin_open: true
     restart: unless-stopped
@@ -163,7 +169,8 @@ services:
       SPLUNK_DEPLOYER_URL: dep1
       SPLUNK_INDEXER_URL: idx1,idx2,idx3
     volumes:
-    - sh3_data:/opt/splunk
+    - sh3_etc:/opt/splunk/etc
+    - sh3_var:/opt/splunk/var
     tty: true
     stdin_open: true
     restart: unless-stopped
@@ -187,7 +194,8 @@ services:
       SPLUNK_SHC_SECRET: ${SPLUNK_SHC_SECRET}
       SPLUNK_SEARCH_HEAD_URL: sh1,sh2,sh3
     volumes:
-    - dep1_data:/opt/splunk
+    - dep1_etc:/opt/splunk/etc
+    - dep1_var:/opt/splunk/var
     tty: true
     stdin_open: true
     restart: unless-stopped
@@ -201,11 +209,19 @@ networks:
 # Named Volumes
 # -------------------------------
 volumes:
-  cm1_data:
-  idx1_data:
-  idx2_data:
-  idx3_data:
-  dep1_data:
-  sh1_data:
-  sh2_data:
-  sh3_data:
+  cm1_etc:
+  cm1_var:
+  idx1_etc:
+  idx1_var:
+  idx2_etc:
+  idx2_var:
+  idx3_etc:
+  idx3_var:
+  sh1_etc:
+  sh1_var:
+  sh2_etc:
+  sh2_var:
+  sh3_etc:
+  sh3_var:
+  dep1_etc:
+  dep1_var:
