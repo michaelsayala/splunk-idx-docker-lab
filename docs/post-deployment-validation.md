@@ -22,6 +22,7 @@ Use this guide to ensure your cluster is:
 ```bash
 splunk show cluster-status
 ```
+<img width="927" height="498" alt="image" src="https://github.com/user-attachments/assets/2080766d-ec2b-438a-bab5-974008fe68d8" />
 
 **Expected:**
 
