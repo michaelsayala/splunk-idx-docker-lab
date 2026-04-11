@@ -172,6 +172,8 @@ cd /opt/splunk/etc/master-apps/_cluster/local
 
 ### Create or Edit `indexes.conf`
 
+<img width="335" height="101" alt="image" src="https://github.com/user-attachments/assets/76a01deb-faca-45f8-876f-3b8b376da329" />
+
 ```ini
 [<index_name>]
 repFactor = auto
